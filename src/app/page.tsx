@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   Music,
   Play,
@@ -19,11 +18,19 @@ import { useRouter } from "next/navigation";
 import NavLink from "next/link";
 
 export default function Home() {
-  const [hoveredArtist, setHoveredArtist] = useState<number | null>(null);
   const router = useRouter();
 
-  const handleArtistClick = (artistId: number) => {
+  const handleArtistClick = (artistId: number) => () => {
     router.push(`/artist/${artistId}`);
+  };
+
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      const y = element.getBoundingClientRect().top + window.scrollY - 50;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
   };
 
   return (
@@ -41,24 +48,27 @@ export default function Home() {
               />
             </div>
             <div className="hidden md:flex items-center space-x-6">
-              <a
+              <NavLink
                 href="#artists"
                 className="hover:text-blue-400 transition-colors"
+                onClick={(e) => handleScroll(e, "artists")}
               >
                 Artists
-              </a>
-              <a
+              </NavLink>
+              <NavLink
                 href="#about"
                 className="hover:text-blue-400 transition-colors"
+                onClick={(e) => handleScroll(e, "about")}
               >
                 About
-              </a>
-              <a
+              </NavLink>
+              <NavLink
                 href="#contact"
                 className="hover:text-blue-400 transition-colors"
+                onClick={(e) => handleScroll(e, "contact")}
               >
                 Contact
-              </a>
+              </NavLink>
               <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500">
                 Book Now
               </Button>
@@ -117,9 +127,7 @@ export default function Home() {
               <Card
                 key={artist.id}
                 className="bg-gray-900/50 border-gray-800 hover:border-blue-500/50 transition-all duration-300 overflow-hidden group cursor-pointer backdrop-blur-sm"
-                onMouseEnter={() => setHoveredArtist(artist.id)}
-                onMouseLeave={() => setHoveredArtist(null)}
-                onClick={() => handleArtistClick(artist.id)}
+                onClick={handleArtistClick(artist.id)}
               >
                 <div className="relative overflow-hidden">
                   <Image
@@ -131,11 +139,6 @@ export default function Home() {
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300"></div>
-                  <div className="absolute top-4 right-4">
-                    <div className="w-12 h-12 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <Play className="h-5 w-5 text-white ml-1" />
-                    </div>
-                  </div>
                 </div>
                 <CardContent className="p-6">
                   <h4 className="text-xl font-bold mb-2 group-hover:text-blue-400 transition-colors">
