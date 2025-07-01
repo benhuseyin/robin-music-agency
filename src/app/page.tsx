@@ -12,84 +12,19 @@ import {
 } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
 import { Card, CardContent } from "@/app/components/ui/card";
-
-const artists = [
-  {
-    id: 1,
-    name: "DJ Phoenix",
-    specialties: ["Minimal Techno", "Deep House"],
-    image:
-      "https://images.pexels.com/photos/1391498/pexels-photo-1391498.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
-    description: "Master of hypnotic minimal beats with 10+ years experience",
-    location: "Berlin, Germany",
-  },
-  {
-    id: 2,
-    name: "Luna Bass",
-    specialties: ["Hard Techno", "Industrial"],
-    image:
-      "https://images.pexels.com/photos/1058959/pexels-photo-1058959.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
-    description: "Bringing raw energy to dancefloors worldwide",
-    location: "Detroit, USA",
-  },
-  {
-    id: 3,
-    name: "Neon Pulse",
-    specialties: ["Progressive House", "Melodic Techno"],
-    image:
-      "https://images.pexels.com/photos/1644924/pexels-photo-1644924.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
-    description: "Creating emotional journeys through electronic soundscapes",
-    location: "Amsterdam, Netherlands",
-  },
-  {
-    id: 4,
-    name: "Apex Sound",
-    specialties: ["Tech House", "Tribal"],
-    image:
-      "https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
-    description: "Fusion of traditional rhythms with modern electronic beats",
-    location: "Ibiza, Spain",
-  },
-  {
-    id: 5,
-    name: "Cyber Flux",
-    specialties: ["Acid Techno", "Breakbeat"],
-    image:
-      "https://images.pexels.com/photos/1449773/pexels-photo-1449773.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
-    description: "Pushing boundaries with experimental electronic sounds",
-    location: "London, UK",
-  },
-  {
-    id: 6,
-    name: "Echo Chamber",
-    specialties: ["Ambient Techno", "Drone"],
-    image:
-      "https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
-    description: "Atmospheric soundscapes for contemplative dancefloors",
-    location: "Tokyo, Japan",
-  },
-  {
-    id: 7,
-    name: "Voltage Strike",
-    specialties: ["Electro", "Breaks"],
-    image:
-      "https://images.pexels.com/photos/1587927/pexels-photo-1587927.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
-    description: "High-energy electronic music with vintage flair",
-    location: "Los Angeles, USA",
-  },
-  {
-    id: 8,
-    name: "Quantum Beat",
-    specialties: ["Psytrance", "Neurofunk"],
-    image:
-      "https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
-    description: "Mind-bending psychedelic electronic experiences",
-    location: "Goa, India",
-  },
-];
+import Image from "next/image";
+import logo from "@/assets/images/image_robin_logo.webp";
+import { artists } from "@/utils/constants/data";
+import { useRouter } from "next/navigation";
+import NavLink from "next/link";
 
 export default function Home() {
   const [hoveredArtist, setHoveredArtist] = useState<number | null>(null);
+  const router = useRouter();
+
+  const handleArtistClick = (artistId: number) => {
+    router.push(`/artist/${artistId}`);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white">
@@ -98,12 +33,12 @@ export default function Home() {
         <div className="container mx-auto px-4 py-4">
           <nav className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <Music className="h-6 w-6 text-white" />
-              </div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                Robin Music Agency
-              </h1>
+              <Image
+                src={logo}
+                className="w-30 h-20 object-contain mt-2.5"
+                alt="Robin Music Agency"
+                priority
+              />
             </div>
             <div className="hidden md:flex items-center space-x-6">
               <a
@@ -184,12 +119,16 @@ export default function Home() {
                 className="bg-gray-900/50 border-gray-800 hover:border-blue-500/50 transition-all duration-300 overflow-hidden group cursor-pointer backdrop-blur-sm"
                 onMouseEnter={() => setHoveredArtist(artist.id)}
                 onMouseLeave={() => setHoveredArtist(null)}
+                onClick={() => handleArtistClick(artist.id)}
               >
                 <div className="relative overflow-hidden">
-                  <img
+                  <Image
                     src={artist.image}
                     alt={artist.name}
+                    width={100}
+                    height={100}
                     className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300"></div>
                   <div className="absolute top-4 right-4">
