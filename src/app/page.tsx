@@ -8,6 +8,8 @@ import {
   Mail,
   Phone,
   MapPin,
+  Menu,
+  X,
 } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
 import { Card, CardContent } from "@/app/components/ui/card";
@@ -16,21 +18,48 @@ import logo from "@/assets/images/image_robin_logo.webp";
 import { artists } from "@/utils/constants/data";
 import { useRouter } from "next/navigation";
 import NavLink from "next/link";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/app/components/ui/dialog";
+import TourDates from "@/assets/images/image_mo_tour_dates.webp";
 
 export default function Home() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isEventsPopupOpen, setIsEventsPopupOpen] = useState(false);
   const router = useRouter();
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   const handleArtistClick = (artistId: number) => () => {
     router.push(`/artist/${artistId}`);
   };
 
-  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+  const handleScroll = (
+    e:
+      | React.MouseEvent<HTMLAnchorElement>
+      | React.MouseEvent<HTMLButtonElement>,
+    id: string
+  ) => {
     e.preventDefault();
     const element = document.getElementById(id);
     if (element) {
       const y = element.getBoundingClientRect().top + window.scrollY - 50;
       window.scrollTo({ top: y, behavior: "smooth" });
+      if (isMenuOpen) {
+        toggleMenu();
+      }
     }
+  };
+
+  const handleShowEventsPopup = () => {
+    setIsEventsPopupOpen(true);
   };
 
   return (
@@ -73,6 +102,19 @@ export default function Home() {
                 Book Now
               </Button>
             </div>
+            <div className="md:hidden">
+              {isMenuOpen ? (
+                <X
+                  className="h-6 w-6 text-white mr-5 animate-fade-in cursor-pointer"
+                  onClick={toggleMenu}
+                />
+              ) : (
+                <Menu
+                  className="h-6 w-6 text-white mr-5 animate-fade-in cursor-pointer"
+                  onClick={toggleMenu}
+                />
+              )}
+            </div>
           </nav>
         </div>
       </header>
@@ -94,19 +136,37 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-lg px-8"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-lg px-8 cursor-pointer"
+              onClick={(e) => handleScroll(e, "artists")}
             >
               <Play className="mr-2 h-5 w-5" />
               Explore Artists
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-gray-600 text-white hover:bg-gray-800 text-lg px-8"
-            >
-              <Calendar className="mr-2 h-5 w-5" />
-              View Events
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-gray-600 text-white hover:bg-gray-800 text-lg px-8 cursor-pointer"
+                >
+                  <Calendar className="mr-2 h-5 w-5" />
+                  View Events
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-gray-900 border-gray-800 text-white">
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent text-center">
+                    Upcoming Events
+                  </DialogTitle>
+                </DialogHeader>
+
+                <Image
+                  src={TourDates}
+                  alt={"Tour dates"}
+                  className="w-full h-full object-contain"
+                />
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </section>
@@ -247,6 +307,37 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 mt-30 animate-fade-in">
+          <div className="container mx-auto">
+            <div className="flex flex-col items-center justify-center h-full">
+              <NavLink
+                href="#artists"
+                className="p-5 text-lg"
+                onClick={(e) => handleScroll(e, "artists")}
+              >
+                Artists
+              </NavLink>
+              <NavLink
+                href="#about"
+                className="p-5 text-lg"
+                onClick={(e) => handleScroll(e, "about")}
+              >
+                About
+              </NavLink>
+              <NavLink
+                href="#contact"
+                className="p-5 text-lg"
+                onClick={(e) => handleScroll(e, "contact")}
+              >
+                Contact
+              </NavLink>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="bg-black border-t border-gray-800 py-8 px-4">
