@@ -23,7 +23,6 @@ interface Props {
 const ArtistClient = ({ id }: Props) => {
   const router = useRouter();
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTrack, setCurrentTrack] = useState(0);
 
   const artistId = parseInt(id);
   const artist = artists.find((a) => a.id === artistId);

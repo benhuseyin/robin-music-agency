@@ -30,7 +30,6 @@ import TourDates from "@/assets/images/image_mo_tour_dates.webp";
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isEventsPopupOpen, setIsEventsPopupOpen] = useState(false);
   const router = useRouter();
 
   const toggleMenu = () => {
@@ -56,10 +55,6 @@ export default function Home() {
         toggleMenu();
       }
     }
-  };
-
-  const handleShowEventsPopup = () => {
-    setIsEventsPopupOpen(true);
   };
 
   return (

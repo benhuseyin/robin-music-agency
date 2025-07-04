@@ -242,10 +242,19 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function ArtistDetailPage({
+type Params = { id: string };
+
+export function generateMetadata({ params }: { params: Params }) {
+  return {
+    title: `Artist - ${params.id}`,
+  };
+}
+
+export default async function Page({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  return <ArtistClient id={params.id} />;
+  const { id } = await params;
+  return <ArtistClient id={id} />;
 }
