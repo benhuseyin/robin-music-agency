@@ -16,6 +16,10 @@ export const metadata: Metadata = {
   title: "Robin Music Agency",
   description:
     "Robin Music Agency is a music agency that represents the finest electronic music artists from around the globe. From minimal techno to hard industrial beats, we bring the underground to the mainstream.",
+  robots: {
+    index: false,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
