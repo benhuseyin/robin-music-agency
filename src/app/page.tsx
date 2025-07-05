@@ -18,7 +18,7 @@ import logo from "@/assets/images/image_robin_logo.webp";
 import { artists } from "@/utils/constants/data";
 import { useRouter } from "next/navigation";
 import NavLink from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogTrigger,
@@ -30,7 +30,6 @@ import TourDates from "@/assets/images/image_mo_tour_dates.webp";
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const router = useRouter();
 
   const toggleMenu = () => {
@@ -56,10 +55,6 @@ export default function Home() {
         toggleMenu();
       }
     }
-  };
-
-  const handleAddBacgroundForDialog = () => {
-    setIsDialogOpen(true);
   };
 
   return (
@@ -148,7 +143,6 @@ export default function Home() {
                   size="lg"
                   variant="outline"
                   className="border-gray-600 text-white hover:bg-gray-800 text-lg px-8 cursor-pointer"
-                  onClick={handleAddBacgroundForDialog}
                 >
                   <Calendar className="mr-2 h-5 w-5" />
                   View Events
