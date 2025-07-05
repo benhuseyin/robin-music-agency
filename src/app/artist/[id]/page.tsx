@@ -242,11 +242,14 @@ export async function generateStaticParams() {
   }));
 }
 
-type Params = { id: string };
-
-export function generateMetadata({ params }: { params: Params }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
   return {
-    title: `Artist - ${params.id}`,
+    title: `Artist - ${id}`,
   };
 }
 
