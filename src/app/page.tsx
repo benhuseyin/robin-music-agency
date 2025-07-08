@@ -8,17 +8,13 @@ import {
   Mail,
   Phone,
   MapPin,
-  Menu,
-  X,
 } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
 import { Card, CardContent } from "@/app/components/ui/card";
 import Image from "next/image";
-import logo from "@/assets/images/image_robin_logo.webp";
 import { artists } from "@/utils/constants/data";
 import { useRouter } from "next/navigation";
 import NavLink from "next/link";
-import { useState } from "react";
 import {
   Dialog,
   DialogTrigger,
@@ -27,92 +23,22 @@ import {
   DialogTitle,
 } from "@/app/components/ui/dialog";
 import TourDates from "@/assets/images/image_mo_tour_dates.webp";
+import useScroll from "@/utils/hooks/useScroll";
+import Header from "@/app/components/layout/Header";
 
 export default function Home() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const { isMenuOpen, handleScroll } = useScroll();
 
   const handleArtistClick = (artistId: number) => () => {
     router.push(`/artist/${artistId}`);
   };
 
-  const handleScroll = (
-    e:
-      | React.MouseEvent<HTMLAnchorElement>
-      | React.MouseEvent<HTMLButtonElement>,
-    id: string
-  ) => {
-    e.preventDefault();
-    const element = document.getElementById(id);
-    if (element) {
-      const y = element.getBoundingClientRect().top + window.scrollY - 50;
-      window.scrollTo({ top: y, behavior: "smooth" });
-      if (isMenuOpen) {
-        toggleMenu();
-      }
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white">
       {/* Header */}
-      <header className="border-b border-gray-800 bg-black/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <nav className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Image
-                src={logo}
-                className="w-30 h-20 object-contain mt-2.5"
-                alt="Robin Music Agency"
-                priority
-              />
-            </div>
-            <div className="hidden md:flex items-center space-x-6">
-              <NavLink
-                href="#artists"
-                className="hover:text-blue-400 transition-colors"
-                onClick={(e) => handleScroll(e, "artists")}
-              >
-                Artists
-              </NavLink>
-              <NavLink
-                href="#about"
-                className="hover:text-blue-400 transition-colors"
-                onClick={(e) => handleScroll(e, "about")}
-              >
-                About
-              </NavLink>
-              <NavLink
-                href="#contact"
-                className="hover:text-blue-400 transition-colors"
-                onClick={(e) => handleScroll(e, "contact")}
-              >
-                Contact
-              </NavLink>
-              <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500">
-                Book Now
-              </Button>
-            </div>
-            <div className="md:hidden">
-              {isMenuOpen ? (
-                <X
-                  className="h-6 w-6 text-white mr-5 animate-fade-in cursor-pointer"
-                  onClick={toggleMenu}
-                />
-              ) : (
-                <Menu
-                  className="h-6 w-6 text-white mr-5 animate-fade-in cursor-pointer"
-                  onClick={toggleMenu}
-                />
-              )}
-            </div>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       {/* Hero Section */}
       <section className="relative py-20 px-4 overflow-hidden">
